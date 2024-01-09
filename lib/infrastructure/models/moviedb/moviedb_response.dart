@@ -23,6 +23,8 @@ class MovieDbResponse {
         totalMovieMovieDBs: json["total_MovieMovieDBs"],
     );
 
+  get results => null;
+
     Map<String, dynamic> toJson() => {
         "dates": dates== null ? null : dates!.toJson(),
         "page": page,
