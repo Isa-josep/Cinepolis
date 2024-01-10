@@ -35,12 +35,13 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
     final nowPlayingMovies =ref.watch(nowPlayingMovisProvider);
     //if(nowPlayingMovies.length ==0) return CircularProgressIndicator();
+    final pelisCortadas = ref.watch(moviesSlideshowProvider);
     return Column(
       
       children: [
         const CustomAppbar(),
 
-        MoviesSlideShow(movies: nowPlayingMovies)
+        MoviesSlideShow(movies: pelisCortadas)
 
         //   Expanded(
         //     child: ListView.builder(
