@@ -12,12 +12,19 @@ class MoviesSlideShow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors =Theme.of(context).colorScheme;
     return SizedBox(
       height: 210,
       width: double.infinity,
       child: 
         Swiper(
-
+          pagination: SwiperPagination(
+            margin: const EdgeInsets.only(top: 0),
+            builder: DotSwiperPaginationBuilder(
+              activeColor: colors.primary,
+              color: colors.brightness ==Brightness.dark?Colors.white:const Color(0xFF808080),
+            )
+          ) ,
           viewportFraction: 0.8,//or 0.9
           scale: 0.9,
           autoplay: true,
