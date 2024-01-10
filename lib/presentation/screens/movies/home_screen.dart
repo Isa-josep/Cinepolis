@@ -12,6 +12,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: _HomeView(),
+     bottomNavigationBar:CustomButtomNavigation() ,
     );
   }
 }
@@ -33,7 +34,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   @override
   Widget build(BuildContext context) {
 
-    final nowPlayingMovies =ref.watch(nowPlayingMovisProvider);
+    //final nowPlayingMovies =ref.watch(nowPlayingMovisProvider);
     //if(nowPlayingMovies.length ==0) return CircularProgressIndicator();
     final pelisCortadas = ref.watch(moviesSlideshowProvider);
     return Column(
