@@ -37,32 +37,67 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final nowPlayingMovies =ref.watch(nowPlayingMovisProvider);
     //if(nowPlayingMovies.length ==0) return CircularProgressIndicator();
     final pelisCortadas = ref.watch(moviesSlideshowProvider);
-    return Column(
-      
-      children: [
-        const CustomAppbar(),
-
-        MoviesSlideShow(movies: pelisCortadas),
-
-        MovieHorizontalListview(movies: nowPlayingMovies,
-        title: 'En cartelera',
-        subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
-        loadNextPage: (){
-          ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
-        },
-        )
-        //   Expanded(
-        //     child: ListView.builder(
-        //     itemCount: nowPlayingMovies.length,
-        //     itemBuilder: (context,index){
-        //     final movie =nowPlayingMovies[index];
-        //     return ListTile(
-        //     title: Text(movie.title),
-        //       );
-        //     }
-        //   ),
-        // )
-      ],
+    
+    
+    return CustomScrollView( //para que no se desborde la pantalla agrega scroll tambie  SingleChildScrollView
+      slivers: [
+        const SliverAppBar(
+          title: CustomAppbar(),
+          floating: true,
+          // flexibleSpace: FlexibleSpaceBar(
+          //   title: CustomAppbar(), //* se supone que debe de ir hay, pero se ve feo
+          // ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index){
+              return Column(  
+                children: [
+                  //const CustomAppbar(),
+                  MoviesSlideShow(movies: pelisCortadas),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'En cartelera',
+                    subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
+                    loadNextPage: (){
+                      ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+                    },
+                  ),
+              
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Próximamente',
+                    subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
+                    loadNextPage: (){
+                      ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+                    },
+                  ),
+              
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Pupulares',
+                  // subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
+                    loadNextPage: (){
+                      ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+                    },
+                  ),
+              
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Mejor calificadas',
+                  // subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
+                    loadNextPage: (){
+                      ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+                    },
+                  ),
+              
+                  
+                ],
+              );
+            },
+            childCount: 1
+        )),
+      ]
     );
   }
 }
