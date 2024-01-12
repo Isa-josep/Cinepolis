@@ -46,7 +46,10 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
         MovieHorizontalListview(movies: nowPlayingMovies,
         title: 'En cartelera',
-        subTitle: 'lunes',
+        subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
+        loadNextPage: (){
+          ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+        },
         )
         //   Expanded(
         //     child: ListView.builder(
