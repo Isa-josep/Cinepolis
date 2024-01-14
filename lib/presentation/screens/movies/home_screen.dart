@@ -29,7 +29,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   void initState() {
     super.initState();
     ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
-
+    ref.read(popularMoviesProvider.notifier).loadNexPage();
+    ref.read(topratingMoviesProvider.notifier).loadNexPage();
+    ref.read(upcomigMoviesProvider.notifier).loadNexPage();
   }
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final nowPlayingMovies =ref.watch(nowPlayingMovisProvider);
     //if(nowPlayingMovies.length ==0) return CircularProgressIndicator();
     final pelisCortadas = ref.watch(moviesSlideshowProvider);
+    final pupularMovies =ref.watch(popularMoviesProvider);
+    final topRatedMovies =ref.watch(topratingMoviesProvider);
+    final upcomingMovies =ref.watch(upcomigMoviesProvider);
     
     
     return CustomScrollView( //para que no se desborde la pantalla agrega scroll tambie  SingleChildScrollView
@@ -65,29 +70,29 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                   ),
               
                   MovieHorizontalListview(
-                    movies: nowPlayingMovies,
+                    movies: upcomingMovies,
                     title: 'Próximamente',
                     subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
                     loadNextPage: (){
-                      ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+                      ref.read(upcomigMoviesProvider.notifier).loadNexPage();
                     },
                   ),
               
                   MovieHorizontalListview(
-                    movies: nowPlayingMovies,
+                    movies: pupularMovies,
                     title: 'Pupulares',
                   // subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
                     loadNextPage: (){
-                      ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+                      ref.read(popularMoviesProvider.notifier).loadNexPage();
                     },
                   ),
               
                   MovieHorizontalListview(
-                    movies: nowPlayingMovies,
+                    movies: topRatedMovies,
                     title: 'Mejor calificadas',
                   // subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
                     loadNextPage: (){
-                      ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
+                      ref.read(topratingMoviesProvider.notifier).loadNexPage();
                     },
                   ),
               
