@@ -2,6 +2,7 @@ import 'package:cinepolis/config/constants/environment.dart';
 import 'package:cinepolis/domain/datasources/movies_datasource.dart';
 import 'package:cinepolis/domain/entities/movie.dart';
 import 'package:cinepolis/infrastructure/mappers/movie_mapper.dart';
+import 'package:cinepolis/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinepolis/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:dio/dio.dart';
 
@@ -69,5 +70,17 @@ class MoviedbDatasource extends MoviesDataSource{
     return _jsonAns(response.data);
   }
   
+  @override
+  Future<Movie> getMovieById(String id) async{
+    final response = await dio.get('/movie/$id');
+    if(response.statusCode !=200)throw Exception('Movie with id $id not found');
+
+    final movieDetails= MovieDetails.fromJson(response.data);
+
+    final Movie movie =MovieMapper.movieDetailsToEntity(movieDetails);
+
+    
+    return movie;
+  }
   
 }
