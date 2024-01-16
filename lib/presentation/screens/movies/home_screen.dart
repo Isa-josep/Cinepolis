@@ -35,6 +35,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   }
   @override
   Widget build(BuildContext context) {
+    final initialLoading = ref.watch(initialLoadingProvider);
+
+    if(initialLoading)  return const FullScreenLoader();
 
     final nowPlayingMovies =ref.watch(nowPlayingMovisProvider);
     //if(nowPlayingMovies.length ==0) return CircularProgressIndicator();
@@ -43,7 +46,6 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final topRatedMovies =ref.watch(topratingMoviesProvider);
     final upcomingMovies =ref.watch(upcomigMoviesProvider);
     
-    return FullScreenLoader();
     
     return CustomScrollView( //para que no se desborde la pantalla agrega scroll tambie  SingleChildScrollView
       slivers: [
@@ -64,7 +66,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                   MovieHorizontalListview(
                     movies: nowPlayingMovies,
                     title: 'En cartelera',
-                    subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
+                    subTitle: 'Lunes 15',//todo: implementar funcion para que sea la fecha actual
                     loadNextPage: (){
                       ref.read(nowPlayingMovisProvider.notifier).loadNexPage();
                     },
@@ -73,7 +75,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                   MovieHorizontalListview(
                     movies: upcomingMovies,
                     title: 'Próximamente',
-                    subTitle: 'Jueves 11',//todo: implementar funcion para que sea la fecha actual
+                 //   subTitle: 'Lunes 15',//todo: implementar funcion para que sea la fecha actual
                     loadNextPage: (){
                       ref.read(upcomigMoviesProvider.notifier).loadNexPage();
                     },
