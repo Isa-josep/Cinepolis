@@ -43,6 +43,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final topRatedMovies =ref.watch(topratingMoviesProvider);
     final upcomingMovies =ref.watch(upcomigMoviesProvider);
     
+    return FullScreenLoader();
     
     return CustomScrollView( //para que no se desborde la pantalla agrega scroll tambie  SingleChildScrollView
       slivers: [
