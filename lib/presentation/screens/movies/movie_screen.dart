@@ -53,6 +53,7 @@ class _CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size= MediaQuery.of(context).size;
+
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight:size.height*0.7 ,
@@ -75,6 +76,8 @@ class _CustomSliverAppBar extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+
+            //* Gradiente de arriba hacia abajo para visualizar mejor el ttitulo
             const SizedBox.expand(
               child: DecoratedBox(
                 decoration: BoxDecoration(
@@ -91,6 +94,7 @@ class _CustomSliverAppBar extends StatelessWidget {
               ),
             ),
 
+            //* Gradiente de izquierda a derecha para visualizar icono de back
             const SizedBox.expand(
               child: DecoratedBox(
                 decoration: BoxDecoration(
