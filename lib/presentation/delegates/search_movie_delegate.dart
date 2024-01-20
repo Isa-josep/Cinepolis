@@ -1,19 +1,38 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:cinepolis/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class SearchMovieDelegate extends SearchDelegate{
+class SearchMovieDelegate extends SearchDelegate<Movie?>{
   @override 
   String get searchFieldLabel => "Buscar película";
 
   @override
   List<Widget>? buildActions(BuildContext context) {
     return[
-      const Text("buildActions"),
+      // if(query.isNotEmpty)
+        FadeIn(
+          animate: query.isNotEmpty,
+          child: IconButton(
+          onPressed: (){
+            query = "";
+            }, 
+            icon: const Icon(Icons.delete_outline_rounded)
+          ),
+        )
+      
+      
     ];  
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return const Text("buildLeading");
+    return  IconButton(
+      onPressed: (){
+        context.pop();
+      }, 
+      icon: const Icon(Icons.arrow_back_ios),
+    );
   }
 
   @override
