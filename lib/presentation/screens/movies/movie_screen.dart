@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cinepolis/domain/entities/movie.dart';
 import 'package:cinepolis/presentation/provider/actors/actor_by_movie_provider.dart';
 import 'package:cinepolis/presentation/provider/movies/movie_info_provider.dart';
@@ -107,7 +108,13 @@ class _MovieDetails extends StatelessWidget {
               ],
           ),
         ),
-       const SizedBox(height: 25,),
+
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text('Actores',style: textStyle.titleLarge,),
+        ),
+        _ActorByMovie(movieId: movie.id.toString(),),
+       const SizedBox(height: 5,),
       ],
     );
   }
@@ -130,20 +137,27 @@ class _CustomSliverAppBar extends StatelessWidget {
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        title: Text(
-          movie.title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.start,
-        ),
+        // title: Text(
+        //   movie.title,
+        //   style: const TextStyle(
+        //     fontSize: 16,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        //   textAlign: TextAlign.start,
+        // ),
         background: Stack(
           children: [
             SizedBox.expand(
               child: Image.network(
                 movie.posterPath,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress){
+                  if(loadingProgress==null) return FadeIn(child: child);
+                  return const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2,)
+                  );
+                
+                },
               ),
             ),
 
@@ -187,6 +201,88 @@ class _CustomSliverAppBar extends StatelessWidget {
     );
   }
 }
+
+
+
+class _ActorByMovie extends ConsumerWidget {
+  final String movieId;
+  const _ActorByMovie({required this.movieId});
+
+  @override
+  Widget build(BuildContext context,ref) {
+    final actorsByMovie= ref.watch(actorsByMovieProvider);
+    if(actorsByMovie[movieId]==null){
+      return const Center(
+        child: CircularProgressIndicator(strokeWidth: 2,)
+      );
+    }
+    final actors=actorsByMovie[movieId]!;
+    return SizedBox(
+      height: 320+10,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: actors.length,
+        itemBuilder: (context,index){
+          final actor=actors[index];
+          return FadeInRight(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              width: 135,
+              child: Column(
+                children: [
+                  ClipRRect(  
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(7),
+                      bottomLeft: Radius.circular(7),
+                      bottomRight: Radius.circular(30),
+                    ),
+                    child: Image.network(
+                      actor.profilePath,
+                      height: 210,
+                      width: 135,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress != null) return  const CircularProgressIndicator(strokeWidth: 2,);
+                        return 
+                          //FadeIn(child: child);
+                          child;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10,),
+                  Text(
+                    actor.name,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis, //crea puntos suspensivos si es que queda mas texto
+                  ),
+                  Text(
+                    actor.character??'Undefine',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis, //crea puntos suspensivos si es que queda mas texto
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+
 
 
 /*
