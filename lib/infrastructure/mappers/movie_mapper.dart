@@ -15,10 +15,10 @@ class MovieMapper {
       originalTitle: moviedb.originalTitle,
       overview: moviedb.overview,
       popularity: moviedb.popularity,
-      posterPath: moviedb.posterPath !=""?
+      posterPath: (moviedb.posterPath !="")?
       "https://image.tmdb.org/t/p/w500${moviedb.posterPath}" :
-      "No-poster",
-      releaseDate: moviedb.releaseDate,
+      "https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101028/112815904-no-hay-icono-de-imagen-disponible-ilustraci%C3%B3n-vectorial-plana.jpg",
+      releaseDate: moviedb.releaseDate !=null? moviedb.releaseDate! : DateTime.now(),
       title: moviedb.title,
       video: moviedb.video,
       voteAverage: moviedb.voteAverage,
