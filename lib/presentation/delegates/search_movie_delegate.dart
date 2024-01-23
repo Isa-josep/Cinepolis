@@ -79,43 +79,48 @@ class _MovieItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     final size= MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5), 
-      child: Row(
-        children: [
-          SizedBox(
-            width: size.width*0.2,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                movie.posterPath
+    return GestureDetector(
+      onTap: (){
+        context.go('/movie/${movie.id}');
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5), 
+        child: Row(
+          children: [
+            SizedBox(
+              width: size.width*0.2,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  movie.posterPath
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10,),
-          SizedBox(
-            width: size.width*0.7,
-            child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                Text(movie.title,style: textStyle.titleMedium),
-                (movie.overview.length>100)
-                ? Text('${movie.overview.substring(0,100)}...')
-                : Text(movie.overview),
-                Row(
-                  children: [
-                    Icon(Icons.star_half_rounded ,color:Colors.amber),
-                    const SizedBox(width: 5,),
-                    Text(
-                      HumanFormats.number(movie.voteAverage,1),
-                      style: textStyle.bodyMedium!.copyWith(color:Colors.amber),
-                    )
-                  ],
-                )
-               ],
-            ),
-          )
-        ],
+            const SizedBox(width: 10,),
+            SizedBox(
+              width: size.width*0.7,
+              child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                  Text(movie.title,style: textStyle.titleMedium),
+                  (movie.overview.length>100)
+                  ? Text('${movie.overview.substring(0,100)}...')
+                  : Text(movie.overview),
+                  Row(
+                    children: [
+                      const Icon(Icons.star_half_rounded ,color:Colors.amber),
+                      const SizedBox(width: 5,),
+                      Text(
+                        HumanFormats.number(movie.voteAverage,1),
+                        style: textStyle.bodyMedium!.copyWith(color:Colors.amber),
+                      )
+                    ],
+                  )
+                 ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
