@@ -4,7 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinepolis/config/helpers/human_format.dart';
 import 'package:cinepolis/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 
 typedef SearchMoviesCallback=Future<List<Movie>> Function(String query);
 
@@ -19,10 +19,20 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
     required this.searchMovies
   });
 
+  void clearStreams(){
+    debounceMovies.close();
+  }
+
   void _onQueryChanged(String query){
     if(_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
-    _debounceTimer =Timer(const Duration(milliseconds: 500),(){ //timepo de espera despues de dejar de escribir 
+    _debounceTimer =Timer(const Duration(milliseconds: 500),() async { //timepo de espera despues de dejar de escribir 
       //!print("Buscando pelis");
+      if(query.isEmpty){
+        debounceMovies.add([]);
+        return;
+      }
+      final movies=await searchMovies(query);
+      debounceMovies.add(movies);
     });
   }
 
@@ -50,9 +60,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
   @override
   Widget? buildLeading(BuildContext context) {
     return  IconButton(
-      onPressed: (){
-        context.pop();
-      }, 
+      onPressed: ()=>{
+        clearStreams(),
+        close(context,null)
+      } ,
       icon: const Icon(Icons.arrow_back_ios),
     );
   }
@@ -76,7 +87,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
             itemBuilder: (context,index){
               return _MovieItem(
                 movie: movies[index],
-                onMovieSelected: close,
+                onMovieSelected: (contex,movie){
+                  clearStreams();
+                  close(context,movie);
+                },
               );
             }
         );
