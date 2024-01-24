@@ -61,7 +61,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
         return ListView.builder(
             itemCount: movies.length,
             itemBuilder: (context,index){
-              return _MovieItem(movie: movies[index]);
+              return _MovieItem(
+                movie: movies[index],
+                onMovieSelected: close,
+              );
             }
         );
       }
@@ -71,8 +74,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
 
 class _MovieItem extends StatelessWidget {
   final Movie movie;
+  final Function onMovieSelected;
   const _MovieItem({
-    required this.movie
+    required this.movie, 
+    required this.onMovieSelected
     });
 
   @override
@@ -81,7 +86,7 @@ class _MovieItem extends StatelessWidget {
     final size= MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
-        context.go('/movie/${movie.id}');
+        onMovieSelected(context, movie);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5), 
