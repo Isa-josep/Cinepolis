@@ -1,9 +1,15 @@
+import 'package:cinepolis/domain/entities/movie.dart';
+import 'package:cinepolis/presentation/delegates/search_movie_delegate.dart';
+
+import 'package:cinepolis/presentation/provider/providers.dart';
 import 'package:flutter/material.dart';
-class CustomAppbar extends StatelessWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ref) {
     final colors =Theme.of(context).colorScheme;
     final titleStyles =Theme.of(context).textTheme.titleSmall;
     return SafeArea(
@@ -19,8 +25,23 @@ class CustomAppbar extends StatelessWidget {
                 Text('Cinepolis',style: titleStyles),
 
               const Spacer(),
-              IconButton(
-                onPressed: (){},
+              IconButton (
+                onPressed: (){
+                  final searchMovies= ref.read(searchMoviesProvider);
+                  final searchQuery=ref.read(searchQueryProvider);
+
+                    showSearch<Movie?> (
+                    query: searchQuery,
+                    context: context, 
+                    delegate: SearchMovieDelegate(
+                    initialMovies:searchMovies,
+                    searchMovies: ref.read(searchMoviesProvider.notifier).searchMovieByQuery
+                  )).then((movie){
+                    if(movie==null)return;
+                    context.push('/movie/${movie.id}');
+                    }
+                  );
+                },
                 icon: const Icon(Icons.search),
               ),
               
