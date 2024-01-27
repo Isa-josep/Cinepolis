@@ -9,7 +9,7 @@ class CustomButtomNavigation extends StatelessWidget {
   });
 
   void onItemTapped(BuildContext context,int index) {
-    print(index);
+    //print(index);
     switch (index) {
       case 0:
         context.go('/home/0');
