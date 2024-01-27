@@ -13,7 +13,7 @@ final appRouter = GoRouter(
         
       },
       routes: [
-        GoRoute(
+      GoRoute(
       path: 'movie/:id',
       name: MovieScreen.name,
       builder: (context, state) {
