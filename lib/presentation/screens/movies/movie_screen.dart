@@ -135,6 +135,15 @@ class _CustomSliverAppBar extends StatelessWidget {
       backgroundColor: Colors.black,
       expandedHeight:size.height*0.7 ,
       foregroundColor: Colors.white,
+      actions: [
+        IconButton(
+          onPressed: (){
+            
+          },
+          icon: const Icon(Icons.favorite_border),
+          //icon: const Icon(Icons.favorite_outlined, color:Colors.red),
+        )
+      ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         // title: Text(
@@ -156,45 +165,45 @@ class _CustomSliverAppBar extends StatelessWidget {
                   return const Center(
                     child: CircularProgressIndicator(strokeWidth: 2,)
                   );
-                
                 },
               ),
             ),
 
             //* Gradiente de arriba hacia abajo para visualizar mejor el ttitulo
-            const SizedBox.expand(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.7,1.0],
-                    colors: [
-                      Colors.transparent,
-                      Colors.black,
-                    ],
-                  )
-                ),
-              ),
+
+            const _CustomGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.7,1.0],
+              colors: [
+                Colors.transparent,
+                Colors.black,
+              ]
+            ),
+
+            //*Gradiante para visualizar el icono de favorito
+
+            const _CustomGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0.0,0.2],
+              colors: [
+                Colors.black87,
+                Colors.transparent,
+              ],
             ),
 
             //* Gradiente de izquierda a derecha para visualizar icono de back
-            const SizedBox.expand(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    //end: Alignment.bottomCenter,
-                    stops: [0.0,0.4],
-                    colors: [
-                      Colors.black,
-                      Colors.transparent,
-                    ],
-                  )
-                ),
-              ),
-            ),
 
+            const _CustomGradient(
+              begin: Alignment.topLeft,
+              //end: Alignment.topRight,
+              stops: [0.0,0.4],
+              colors: [
+                Colors.black87,
+                Colors.transparent,
+              ],
+            )
           ],
         ),
       ),
@@ -350,3 +359,35 @@ SizedBox.expand(
             
             }
  */
+
+class _CustomGradient extends StatelessWidget {
+  final Alignment begin;
+  final Alignment? end;
+  final List<double> stops;
+  final List<Color> colors;
+  const _CustomGradient({
+   required this.begin, 
+   this.end, 
+   required this.stops, 
+   required this.colors
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return  SizedBox.expand(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: begin,
+            end: Alignment.bottomCenter,
+            stops: stops,
+            colors: [
+              colors[0],
+              colors[1],
+            ],
+          )
+        ),
+      ),
+    );
+  }
+}
