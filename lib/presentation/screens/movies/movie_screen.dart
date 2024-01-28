@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinepolis/domain/entities/movie.dart';
-import 'package:cinepolis/presentation/provider/actors/actor_by_movie_provider.dart';
-import 'package:cinepolis/presentation/provider/movies/movie_info_provider.dart';
+import 'package:cinepolis/presentation/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
@@ -121,14 +121,14 @@ class _MovieDetails extends StatelessWidget {
 }
 
 
-class _CustomSliverAppBar extends StatelessWidget {
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
   const _CustomSliverAppBar({ 
     required this.movie
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ref) {
     final size= MediaQuery.of(context).size;
 
     return SliverAppBar(
@@ -138,7 +138,9 @@ class _CustomSliverAppBar extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: (){
-            
+            //* agregar o quitar de favoritos
+            ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
+
           },
           icon: const Icon(Icons.favorite_border),
           //icon: const Icon(Icons.favorite_outlined, color:Colors.red),
