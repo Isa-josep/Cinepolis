@@ -1,4 +1,5 @@
 import 'package:cinepolis/presentation/provider/providers.dart';
+import 'package:cinepolis/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,15 +27,7 @@ class FavoritesViewState extends ConsumerState<FavoritesView> {
       appBar: AppBar(
         title: const Text('Favorites'),
       ),
-      body: ListView.builder(
-        itemCount: favoriteMovies.length,
-        itemBuilder: (context,index){
-          final movies = favoriteMovies[index];
-          return ListTile(
-            title: Text(movies.title),
-          );
-        }
-      )
+      body: MovieMasonry(movie: favoriteMovies,),
     );
   }
 }
