@@ -120,6 +120,11 @@ class _MovieDetails extends StatelessWidget {
   }
 }
 
+final  isFavoriteProvider=FutureProvider.family.autoDispose((ref, int movieId) {
+  final localStorageRepository =ref.watch(localStorageRepositoryProvider);
+   
+  return localStorageRepository.isMovieFavorite(movieId);
+});
 
 class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
@@ -131,18 +136,33 @@ class _CustomSliverAppBar extends ConsumerWidget {
   Widget build(BuildContext context,ref) {
     final size= MediaQuery.of(context).size;
 
+    final isFavoriteFuture=ref.watch(isFavoriteProvider(movie.id));
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight:size.height*0.7 ,
       foregroundColor: Colors.white,
       actions: [
         IconButton(
-          onPressed: (){
-            //* agregar o quitar de favoritos
-            ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
-
+          onPressed: () {
+            ref.watch(localStorageRepositoryProvider).toggleFavorite(movie)
+              .then((_) =>
+                  //! Reload the favorite info then redraw the favorite icon
+              ref.invalidate(isFavoriteProvider(movie.id)),
+            );
           },
-          icon: const Icon(Icons.favorite_border),
+          // onPressed: (){
+          //   //* agregar o quitar de favoritos
+          //   ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
+          //   ref.invalidate(isFavoriteProvider(movie.id));
+          // },
+          icon: isFavoriteFuture.when(
+            data: (isFavorite)=> isFavorite 
+            ? const Icon(Icons.favorite, color:Colors.red)
+            : const Icon(Icons.favorite_border),
+            error: (_,__)=>throw UnimplementedError(), 
+            loading:()=> const CircularProgressIndicator(strokeWidth: 2,)
+          )
+          //const Icon(Icons.favorite_border),
           //icon: const Icon(Icons.favorite_outlined, color:Colors.red),
         )
       ],
