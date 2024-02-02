@@ -37,6 +37,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
       debounceMovies.add(movies);
       initialMovies=movies;
       isLoadingStream.add(false);
+      await Future.delayed(const Duration(milliseconds: 500));
     });
   }
 
